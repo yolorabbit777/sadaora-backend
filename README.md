@@ -1,98 +1,217 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Profile Feed API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A NestJS backend system that allows users to create and update their profiles and exposes a public feed of user profiles with SQLite data persistence.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 📝 Overview
 
-## Description
+This API provides a system for managing user profiles and displaying them in a public feed. Users can create and update their profiles with personal information and interests. The public feed can be filtered by interest and supports pagination for efficient data retrieval.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 🔧 Tech Stack
 
-## Project setup
+- **NestJS**: Progressive Node.js framework for building server-side applications
+- **TypeScript**: Superset of JavaScript that adds static typing
+- **TypeORM**: ORM for TypeScript and JavaScript
+- **SQLite**: Lightweight disk-based database
+- **Jest**: JavaScript testing framework
 
-```bash
-$ npm install
+## 📋 Features
+
+- Create new user profiles
+- Update existing profiles
+- View public feed of all profiles
+- Filter feed by interests
+- Paginate the feed results
+- Get statistics about most common interests
+
+## 🚀 API Endpoints
+
+### Profiles
+
+- `POST /api/profile` - Create a new user profile
+
+  ```json
+  {
+    "fullName": "Aaron Deak",
+    "bio": "Software Developer at Sadaora",
+    "profileImageUrl": "https://example.com/aarondeak.jpg",
+    "interests": ["React", "NestJS", "NodeJS"]
+  }
+  ```
+
+- `PUT /api/profile/:id` - Update an existing profile
+  ```json
+  {
+    "bio": "Senior Software Engineer with 10 years experience",
+    "interests": ["React", "Next.js", "Nest.js", "TailwindCSS"]
+  }
+  ```
+
+### Feed
+
+- `GET /api/feed` - Get all profiles with default pagination (10 items per page)
+- `GET /api/feed?interest=travel` - Filter feed by interest
+- `GET /api/feed?page=2&limit=20` - Custom pagination
+
+### Stats
+
+- `GET /api/stats` - Get top 3 most common interests across all profiles
+
+## 🛠️ Project Structure
+
+```
+sadaora-backend/
+├── src/
+│   ├── main.ts                # Application entry point
+│   ├── app.module.ts          # Root module
+│   ├── profiles/              # Profiles feature module
+│   │   ├── entities/
+│   │   │   └── profile.entity.ts
+│   │   ├── dto/
+│   │   │   ├── create-profile.dto.ts
+│   │   │   └── update-profile.dto.ts
+│   │   ├── profiles.controller.ts
+│   │   ├── profiles.service.ts
+│   │   └── profiles.module.ts
+│   ├── feed/                  # Feed feature module
+│   │   ├── feed.controller.ts
+│   │   ├── feed.service.ts
+│   │   └── feed.module.ts
+│   └── stats/                 # Stats feature module
+│       ├── stats.controller.ts
+│       ├── stats.service.ts
+│       └── stats.module.ts
+├── test/                      # Unit tests
+│   ├── profiles.controller.spec.ts
+│   ├── feed.controller.spec.ts
+│   └── stats.controller.spec.ts
+├── package.json
+├── tsconfig.json
+└── README.md
 ```
 
-## Compile and run the project
+## 🏗️ Setup Instructions
+
+### Prerequisites
+
+- Node.js (v18 or later)
+- npm (v10 or later)
+
+### Installation
+
+1. Clone the repository
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+git clone https://github.com/yolorabbit777/sadaora-backend.git
+cd sadaora-backend
 ```
 
-## Run tests
+2. Install dependencies
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npm install
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+3. Start the development server
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+npm run start:dev
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+The API will be available at `http://localhost:3000`
 
-## Resources
+### Testing
 
-Check out a few resources that may come in handy when working with NestJS:
+Run the test suite with:
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+```bash
+npm test
+```
 
-## Support
+For test coverage report:
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```bash
+npm run test:cov
+```
 
-## Stay in touch
+## 📊 Data Model
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### Profile Entity
 
-## License
+| Field           | Type     | Description                         |
+| --------------- | -------- | ----------------------------------- |
+| id              | UUID     | Unique identifier (auto-generated)  |
+| fullName        | string   | User's full name                    |
+| bio             | string   | User biography or description       |
+| profileImageUrl | string   | URL to profile image                |
+| interests       | string[] | List of user interests              |
+| createdAt       | Date     | Creation timestamp (auto-generated) |
+| updatedAt       | Date     | Update timestamp (auto-updated)     |
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+## 💾 Database
+
+The application uses SQLite for data persistence. The database file `profiles.sqlite` is created automatically in the project root when the application starts. The schema is synchronized automatically based on the entity definitions.
+
+## 🔍 Implementation Details
+
+### SQLite Database
+
+The version uses SQLite with TypeORM for persistence, providing:
+
+- Data durability across application restarts
+- Efficient queries with TypeORM
+- Schema validation and migration capabilities
+
+### Interest Filtering Implementation
+
+Since SQLite doesn't natively support array operations for the interests field:
+
+1. We first use a LIKE query to find potential matches
+2. Then apply a secondary JavaScript filter for exact matching
+
+This ensures accurate filtering while working within SQLite's limitations.
+
+### Pagination Implementation
+
+Feed pagination is implemented with:
+
+- `skip` and `take` parameters in TypeORM queries
+- Default values (page=1, limit=10)
+- Total count returned for client-side pagination UI
+
+## 🧪 Testing Strategy
+
+The project includes comprehensive unit tests for all controllers and services:
+
+- **Profiles Module**: Tests for creating and updating profiles
+- **Feed Module**: Tests for retrieving and filtering profiles
+- **Stats Module**: Tests for retrieving interest statistics
+
+Tests use Jest's mocking capabilities to isolate components and verify correct behavior without relying on the database.
+
+## 🔄 CI/CD Considerations
+
+For a production deployment, consider:
+
+1. Setting up GitHub Actions or similar CI/CD pipeline
+2. Adding pre-commit hooks for linting and formatting
+3. Implementing E2E tests
+4. Configuring staging and production environments
+
+## 🚧 Future Improvements
+
+- Authentication and authorization
+- User roles and permissions
+- Full-text search for profiles
+- More sophisticated interest matching
+- Move to a more robust database (PostgreSQL, MySQL) for production
+- Add caching for frequently accessed data
+- Implement rate limiting for API endpoints
+
+## ⏱️ Time Taken
+
+- Project setup: 10 minutes
+- Core functionality implementation: 2 hour
+- Testing: 30 minutes
+- Documentation: 30 minutes
+
+Total: ~3 hours
